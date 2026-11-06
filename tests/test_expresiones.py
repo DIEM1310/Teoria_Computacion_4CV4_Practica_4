@@ -1,9 +1,11 @@
 """Pruebas de las expresiones regulares (src/expresiones.py) y de las cadenas de prueba del controlador."""
 
 import itertools
+import re
 
 import pytest
 
+import automata as A
 import controlador as K
 import ejercicios as E
 import expresiones as X
@@ -185,3 +187,119 @@ def test_afirmaciones_201_a_234(w, regex, esperado):
 def test_expresiones_de_los_lenguajes_236_a_240(regex, pertenece):
     e = X.parsear(regex)
     assert all(X.acepta(e, w) == pertenece(w) for n in range(13) for t in itertools.product("01", repeat=n) for w in ["".join(t)])
+
+
+@pytest.mark.parametrize("texto", ["(a", "a)", "*a", "a+", "+a", "()", "a++b"])
+def test_los_mensajes_de_error_dan_la_posicion(texto):
+    with pytest.raises(X.ErrorDeSintaxis) as info:
+        X.parsear(texto)
+    assert "posición" in str(info.value)
+
+
+# ---------------------------------------------------------------------------
+# Práctica 4: construcción de Thompson (expresión regular a AFN-λ)
+# ---------------------------------------------------------------------------
+
+def equivalente_con_automata(automata, e, longitud):
+    return all(automata.acepta(w) == X.acepta(e, w)
+               for n in range(longitud + 1) for t in itertools.product(automata.alfabeto, repeat=n) for w in ["".join(t)])
+
+
+@pytest.mark.parametrize("texto", ["∅", "λ", "a", "a+b", "ab", "a*", "(a+b)*", "a*b", "(ab)*a",
+                                   "(a+b)*abb", "a(ba)*+b", "(a+λ)(b+∅)"])
+def test_desde_expresion_equivale_a_la_expresion(texto):
+    e = X.parsear_sin_simplificar(texto)
+    afn, pasos = X.desde_expresion(e, "ab")
+    assert equivalente_con_automata(afn, e, 9)
+    assert pasos[-1].automata is afn
+    assert afn.estados == [f"q{i}" for i in range(len(afn.estados))]      # renombrado secuencial
+
+
+def test_el_caso_base_vacio_no_tiene_ninguna_transicion():
+    afn, pasos = X.desde_expresion(X.ER_VACIO, "a")
+    assert len(afn.estados) == 2 and not afn.transiciones()
+    assert pasos[0].caso.startswith("Caso básico ∅")
+
+
+def test_el_caso_base_lambda_tiene_una_transicion_lambda():
+    afn, pasos = X.desde_expresion(X.ER_LAMBDA, "a")
+    assert afn.transiciones() == [(afn.inicial, "", [q for q in afn.estados if q != afn.inicial][0])]
+    assert pasos[0].caso.startswith("Caso básico λ")
+
+
+def test_cada_operador_del_texto_da_un_paso_de_construccion():
+    # (a+b)*abb: a, b, union, estrella, a, b, b, concatenación final: 8 piezas.
+    e = X.parsear_sin_simplificar("(a+b)*abb")
+    _, pasos = X.desde_expresion(e, "ab")
+    assert len(pasos) == 8
+    assert [p.expresion for p in pasos] == ["a", "b", "a+b", "(a+b)*", "a", "b", "b", "(a+b)*abb"]
+
+
+def test_la_estrella_no_reutiliza_el_inicio_ni_el_final_de_la_pieza():
+    """Ejercicio 274 de la Lista 4: a diferencia del atajo (hacer final al inicio de la pieza y
+    agregar una λ de vuelta desde su final), la construcción correcta usa dos estados nuevos."""
+    pieza = X.simbolo("b")
+    afn_pieza, _ = X.desde_expresion(pieza, "b")
+    e = X.estrella(pieza)
+    afn, pasos = X.desde_expresion(e, "b")
+    paso_estrella = pasos[-1]
+    assert len(paso_estrella.automata.estados) > len(afn_pieza.estados)   # dos estados de más
+
+
+@pytest.mark.parametrize("nombre", [e.nombre for e in E.EXPRESIONES_LISTA4])
+def test_las_expresiones_del_ejercicio_272_y_278_de_la_lista_4(nombre):
+    """272(a-e) y 278: cada AFN-λ de Thompson, llevado por las tres etapas de la Práctica 3
+    (quitar λ, subconjuntos, minimizar), reconoce el mismo lenguaje que la expresión."""
+    entrega = E.POR_NOMBRE_EXPRESION[nombre]
+    e = X.parsear_sin_simplificar(entrega.texto)
+    afn_lambda, pasos = X.desde_expresion(e, entrega.alfabeto)
+    afn = afn_lambda.quitar_lambda()
+    afd = afn.a_afd(completo=True).afd
+    minimo = afd.minimizar()
+    assert equivalente_con_automata(minimo, e, 10)
+    assert len(minimo.estados) <= len(afd.estados) <= len(afn.estados) <= len(afn_lambda.estados)
+
+
+@pytest.mark.parametrize("cadena", E.CADENAS_273)
+def test_ejercicio_273_cadenas_contra_272b_y_272c(cadena):
+    """Verifica con el procesamiento por λ-clausuras (Automata.acepta, que hace la λ-clausura
+    al inicio y después de cada símbolo) si 272(b) y 272(c) aceptan cada cadena."""
+    afn_b, _ = X.desde_expresion(X.parsear_sin_simplificar("(ab)*a"), "ab")
+    afn_c, _ = X.desde_expresion(X.parsear_sin_simplificar("(a+b)*abb"), "ab")
+    assert afn_b.acepta(cadena) == bool(re.fullmatch(r"(ab)*a", cadena))
+    assert afn_c.acepta(cadena) == bool(re.fullmatch(r"(?:[ab])*abb", cadena))
+
+
+def test_los_cinco_autómatas_254_a_258_se_recuperan_con_desde_expresion():
+    """Compara, para cada autómata de 254 a 258, su AFD mínimo con el de la expresión obtenida
+    por eliminación de estados y reconstruida con Thompson: deben ser equivalentes (Ejercicio 3)."""
+    for num in range(254, 259):
+        original = E.POR_NOMBRE[f"Ej_{num}_tabla"].fabrica()
+        er, _, _ = X.desde_automata(original)
+        reconstruido, _ = X.desde_expresion(X.parsear_sin_simplificar(str(er)), original.alfabeto)
+        resultado = A.comparar_por_minimo(original.minimizar(), reconstruido.quitar_lambda().a_afd().afd)
+        assert resultado.equivalentes, (num, resultado.motivo)
+
+
+@pytest.mark.parametrize("nombre", ["Ej_276_tabla", "Ej_277_tabla"])
+def test_ejercicios_276_y_277_de_la_lista_4(nombre):
+    """El AFD mínimo del original equivale al AFN-λ de Thompson construido con la expresión que
+    obtiene desde_automata (eliminación de estados), reducido por las etapas de la Práctica 3."""
+    original = E.POR_NOMBRE_LISTA4[nombre].fabrica()
+    assert original.motivo_no_determinista() is None     # son AFD
+    er, _, _ = X.desde_automata(original)
+    reconstruido, _ = X.desde_expresion(X.parsear_sin_simplificar(str(er)), original.alfabeto)
+    resultado = A.comparar_por_minimo(original.minimizar(), reconstruido.quitar_lambda().a_afd().afd)
+    assert resultado.equivalentes, resultado.motivo
+
+
+def test_parsear_sin_simplificar_conserva_la_union_con_vacio_y_lambda():
+    """A diferencia de parsear(), que simplificaría (b+∅) a «b», parsear_sin_simplificar deja el
+    árbol tal como se escribió: lo necesita desde_expresion para el ejercicio 272(e)."""
+    simplificado = X.parsear("(a+λ)(b+∅)")
+    crudo = X.parsear_sin_simplificar("(a+λ)(b+∅)")
+    assert simplificado.tipo == "concat" and len(simplificado.valor) == 2
+    assert simplificado.valor[1].tipo == "simbolo"              # ∅ ya se simplificó dentro de la unión
+    assert crudo.valor[1].tipo == "union" and len(crudo.valor[1].valor) == 2   # b y ∅, intactos
+    assert str(crudo) == "(a+λ)(b+∅)"                 # el texto conserva lo que se escribió
+    assert str(simplificado) == "(a+λ)b"              # el simplificado ya perdió el «+∅»

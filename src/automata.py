@@ -374,6 +374,21 @@ class Automata:
     def es_determinista(self):
         return self.tipo == TIPO_AFD
 
+    def motivo_no_determinista(self):
+        """Por qué el autómata no es un AFD: el primer estado y símbolo que lo impiden (Práctica 4,
+        Ejercicio 3: verificar un .jff importado). None si ya es un AFD (puede ser parcial)."""
+        for q in self.estados:
+            for r in self.destinos(q, ""):
+                return (f"El estado «{q}» tiene una transición λ (hacia «{r}»): "
+                        "un AFD no tiene transiciones λ.")
+        for q in self.estados:
+            for s in self.alfabeto:
+                destinos = self.destinos(q, s)
+                if len(destinos) > 1:
+                    return (f"El estado «{q}» tiene {len(destinos)} transiciones con el símbolo «{s}» "
+                            f"(hacia {', '.join(destinos)}): un AFD tiene a lo más una por estado y símbolo.")
+        return None
+
     def es_completo(self):
         """True si todo estado tiene exactamente una transición por cada símbolo."""
         if self.tipo != TIPO_AFD:

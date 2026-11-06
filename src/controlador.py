@@ -10,8 +10,10 @@ import zlib
 from datetime import datetime
 from pathlib import Path
 
+import expresiones as X
 import formatos as F
-from automata import LIMITE_CAMINOS, Automata, AutomataInvalido, formatear_conjunto
+import validadores as V
+from automata import LIMITE_CAMINOS, Automata, AutomataInvalido, comparar_por_minimo, formatear_conjunto
 from construcciones import cadenas_hasta
 from dibujo import svg_automata
 from lenguajes import LAMBDA, parsear_alfabeto
@@ -466,3 +468,87 @@ def guardar_informe(a, resultados, nombre, origen=""):
     ruta = CARPETA_SALIDAS / f"{base}.txt"
     ruta.write_text(informe_de_lote(a, resultados, origen), encoding="utf-8", newline="\n")
     return ruta.relative_to(RAIZ).as_posix()
+
+
+# ---------------------------------------------------------------------------
+# Práctica 4, Ejercicio 2: de expresión regular a AFN-λ (construcción de Thompson)
+# ---------------------------------------------------------------------------
+
+def analizar_expresion(texto, alfabeto_texto):
+    """Expresión (árbol literal, sin simplificar) y su AFN-λ, a partir de lo que escribió el
+    usuario. Lanza expresiones.ErrorDeSintaxis o ValueError (ambos heredan de ValueError, así
+    que Aplicacion.intentar los atrapa igual) con un mensaje que indica la posición del error o
+    el símbolo que falta en Σ."""
+    alfabeto = parsear_alfabeto(alfabeto_texto)
+    e = X.parsear_sin_simplificar(texto)
+    afn, pasos = X.desde_expresion(e, alfabeto)
+    return e, afn, pasos
+
+
+def titulo_de_paso_construccion(pasos, k):
+    return f"Pieza {k + 1} de {len(pasos)}: {pasos[k].expresion}"
+
+
+def resumen_de_construccion(e, afn, pasos):
+    return (f"{len(pasos)} piezas construidas. El AFN-λ final tiene {len(afn.estados)} estados y "
+            f"{len(afn.transiciones())} transiciones (renombrados q0, q1, ... desde el inicial).")
+
+
+# ---------------------------------------------------------------------------
+# Práctica 4, Ejercicio 3: de autómata a expresión regular (eliminación de estados)
+# ---------------------------------------------------------------------------
+
+def verificar_determinismo(a):
+    """(es_afd, motivo): motivo es None si a ya es un AFD; si no, por qué no lo es (Ejercicio 3:
+    verificar un .jff importado antes de eliminar estados)."""
+    motivo = a.motivo_no_determinista()
+    return motivo is None, motivo
+
+
+def filas_de_un_paso_de_eliminacion(paso):
+    """(origen, destino, expresión) de cada arista que queda después de eliminar `paso.eliminado`;
+    es una foto completa del autómata generalizado en ese momento, no solo lo que cambió."""
+    return list(paso.aristas)
+
+
+def filas_del_automata_generalizado_inicial(a):
+    """(origen, destino, expresión) del autómata generalizado antes de eliminar ningún estado:
+    los estados nuevos «inicio» y «fin» con una λ hacia el inicial y desde cada aceptación, más
+    las transiciones propias del autómata, ya como expresión."""
+    aristas = X.aristas_iniciales(a)
+    return sorted((p, q, str(expr)) for (p, q), expr in aristas.items())
+
+
+def titulo_de_paso_eliminacion(pasos, k):
+    if k == 0:
+        return f"Autómata generalizado (antes de eliminar ningún estado; de {len(pasos)})"
+    return f"Se eliminó «{pasos[k - 1].eliminado}»  ({k} de {len(pasos)})"
+
+
+def reconstruir_y_comparar(original, er, alfabeto):
+    """Vuelve a aplicar el Ejercicio 2 a la expresión `er` obtenida del Ejercicio 3 (AFN-λ de
+    Thompson, quitar λ, subconjuntos, minimizar) y compara el resultado con `original` por sus
+    AFD mínimos: si coinciden, el teorema de Kleene cerró el ciclo sobre este autómata."""
+    afn, _ = X.desde_expresion(er, alfabeto)
+    reconstruido = afn.quitar_lambda().a_afd(completo=True).afd
+    return comparar_por_minimo(original, reconstruido)
+
+
+# ---------------------------------------------------------------------------
+# Práctica 4, Ejercicio 4: validadores
+# ---------------------------------------------------------------------------
+
+def construir_validador(v):
+    return V.construir_automata(v)
+
+
+def validar_con_validador(v, etapas, texto):
+    """(veredicto, explicación) al validar `texto` con el AFD mínimo del validador `v`. Un
+    carácter fuera del alfabeto del validador (p. ej. un espacio en el teléfono) se trata como
+    cadena rechazada, no como error: validadores.py ya eligió el alfabeto más pequeño posible."""
+    try:
+        if etapas.minimo.acepta(texto):
+            return "ACEPTADA", f"«{texto}» pertenece al lenguaje de «{v.titulo}»."
+        return "RECHAZADA", f"«{texto}» no pertenece al lenguaje de «{v.titulo}»."
+    except ValueError as error:
+        return "RECHAZADA", str(error)

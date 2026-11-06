@@ -7,7 +7,9 @@ import pytest
 
 import controlador as K
 import dibujo as D
+import expresiones as X
 import formatos as F
+import validadores as V
 from automata import Automata, AutomataInvalido
 from test_automata import anexo3, par_de_ceros, termina_en_01
 from test_formatos import con_nombres_dificiles, con_simbolos_especiales
@@ -285,3 +287,68 @@ def test_todos_los_autómatas_entregados_se_pueden_dibujar():
         a = F.leer_archivo(ruta)
         svg = D.svg_automata(a, activos={a.inicial})
         assert ElementTree.fromstring(svg).tag == f"{SVG}svg"
+
+
+# ---------------------------------------------------------------------------
+# Práctica 4: expresión a autómata (Ejercicio 2) y autómata a expresión (Ejercicio 3)
+# ---------------------------------------------------------------------------
+
+def test_analizar_expresion_da_el_arbol_el_afn_y_los_pasos():
+    e, afn, pasos = K.analizar_expresion("(a+b)*abb", "a, b")
+    assert str(e) == "(a+b)*abb" and len(pasos) == 8
+    assert afn.estados == [f"q{i}" for i in range(len(afn.estados))]
+    assert K.resumen_de_construccion(e, afn, pasos).startswith("8 piezas")
+    assert K.titulo_de_paso_construccion(pasos, 0) == f"Pieza 1 de {len(pasos)}: a"
+
+
+def test_analizar_expresion_rechaza_un_simbolo_fuera_del_alfabeto():
+    with pytest.raises(ValueError):
+        K.analizar_expresion("ac", "a, b")
+
+
+def test_analizar_expresion_rechaza_una_expresion_mal_escrita_con_posicion():
+    with pytest.raises(Exception) as info:
+        K.analizar_expresion("a+", "a, b")
+    assert "posición" in str(info.value)
+
+
+def test_verificar_determinismo_distingue_afd_de_afnd():
+    assert K.verificar_determinismo(par_de_ceros()) == (True, None)
+    es_afd, motivo = K.verificar_determinismo(termina_en_01())
+    assert es_afd is False and motivo is not None
+
+
+def test_filas_y_titulo_de_un_paso_de_eliminacion():
+    a = Automata("01", ["A", "B"], "A", ["B"], [("A", "0", "A"), ("A", "1", "B"), ("B", "0", "A"), ("B", "1", "B")])
+    er, pasos = X.eliminar_en_orden(a, ["B", "A"])
+    assert K.titulo_de_paso_eliminacion(pasos, 0) == "Autómata generalizado (antes de eliminar ningún estado; de 2)"
+    assert K.titulo_de_paso_eliminacion(pasos, 1) == 'Se eliminó «B»  (1 de 2)'
+    assert K.filas_de_un_paso_de_eliminacion(pasos[-1]) == [("inicio", "fin", str(er))]
+
+
+def test_reconstruir_y_comparar_cierra_el_ciclo_del_teorema_de_kleene():
+    original = termina_en_01().a_afd(completo=True).afd
+    er, _, _ = X.desde_automata(original)
+    resultado = K.reconstruir_y_comparar(original, er, original.alfabeto)
+    assert resultado.equivalentes, resultado.motivo
+
+
+# ---------------------------------------------------------------------------
+# Práctica 4: validadores (Ejercicio 4)
+# ---------------------------------------------------------------------------
+
+def test_construir_validador_y_validar_con_validador():
+    v = V.POR_CLAVE["fecha"]
+    etapas = K.construir_validador(v)
+    assert len(etapas.minimo.estados) <= len(etapas.afd.estados)
+    veredicto, explicacion = K.validar_con_validador(v, etapas, "01/01/2027")
+    assert veredicto == "ACEPTADA" and "01/01/2027" in explicacion
+    veredicto, explicacion = K.validar_con_validador(v, etapas, "32/01/2027")
+    assert veredicto == "RECHAZADA"
+
+
+def test_validar_con_validador_no_truena_con_un_simbolo_fuera_del_alfabeto():
+    v = V.POR_CLAVE["telefono"]
+    etapas = K.construir_validador(v)
+    veredicto, explicacion = K.validar_con_validador(v, etapas, "55 1234 5678")
+    assert veredicto == "RECHAZADA" and explicacion

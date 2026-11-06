@@ -479,3 +479,22 @@ def test_dos_formas_del_mismo_lenguaje_son_iguales_y_se_distinguen_de_otro():
     assert A.lenguajes_iguales(termina_en_01(), termina_en_01().a_afd().afd)
     assert not A.lenguajes_iguales(par_de_ceros(), anexo3())
     assert A.cadena_distintiva(par_de_ceros(), par_de_ceros()) is None
+
+
+# ---------------------------------------------------------------------------
+# Práctica 4: verificar que un autómata importado sea un AFD (Ejercicio 3)
+# ---------------------------------------------------------------------------
+
+def test_un_afd_no_tiene_motivo_de_no_determinismo():
+    assert par_de_ceros().motivo_no_determinista() is None
+    assert termina_en_01().a_afd().afd.motivo_no_determinista() is None
+
+
+def test_motivo_no_determinista_senala_la_transicion_lambda():
+    motivo = anexo3().motivo_no_determinista()
+    assert motivo is not None and "λ" in motivo and "q0" in motivo
+
+
+def test_motivo_no_determinista_senala_el_estado_y_simbolo_con_dos_destinos():
+    motivo = termina_en_01().motivo_no_determinista()
+    assert motivo is not None and "q0" in motivo and "«0»" in motivo

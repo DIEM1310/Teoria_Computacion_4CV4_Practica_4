@@ -11,8 +11,10 @@ import flet as ft
 
 import controlador as K
 import dibujo as D
+import expresiones as X
 import formatos as F
 import lenguajes as L
+import validadores as V
 from automata import LIMITE_ESTADOS_AFD, comparar_por_minimo
 
 GRIS = ft.Colors.BLUE_GREY_700
@@ -112,10 +114,15 @@ class Aplicacion:
         self._armar_simulacion()
         self._armar_conversiones()
         self._armar_lotes()
+        self._armar_expresiones()
+        self._armar_automata_a_expresion()
+        self._armar_validadores()
         self._armar_lenguajes()
-        pestanas = ["Definición", "Archivos", "Simulación", "Conversiones", "Varias cadenas", "Cadenas y lenguajes"]
+        pestanas = ["Definición", "Archivos", "Simulación", "Conversiones", "Varias cadenas",
+                    "Expresión → autómata", "Autómata → expresión", "Validadores", "Cadenas y lenguajes"]
         vistas = [self.vista_definicion, self.vista_archivos, self.vista_simulacion, self.vista_conversiones,
-                  self.vista_lotes, self.vista_lenguajes]
+                  self.vista_lotes, self.vista_expresiones, self.vista_automata_a_expresion, self.vista_validadores,
+                  self.vista_lenguajes]
         self.page.add(self.titulo, self.resumen, self.problemas,
                       ft.Tabs(length=len(pestanas), expand=True, content=ft.Column(expand=True, controls=[
                           ft.TabBar(tabs=[ft.Tab(label=p) for p in pestanas]),
@@ -827,6 +834,268 @@ class Aplicacion:
                                   L.texto_cerradura(simbolos, n, cadenas, positiva))
         self.avisar(self.mensaje2, f"Guardado en {ruta}", VERDE)
         self.page.update()
+
+
+    # ================================================================== Práctica 4: Ejercicio 2
+
+    def _armar_expresiones(self):
+        self.construccion = None        # (expresión, AFN-λ, pasos) del último análisis
+        self.paso_construccion = 0
+        self.campo_expresion = ft.TextField(label="Expresión regular", hint_text="Ejemplo: (a+b)*abb", width=420,
+                                            on_submit=self.analizar_expresion_click)
+        self.campo_alfabeto_expr = ft.TextField(label="Alfabeto Σ", hint_text="Ejemplo: a, b", width=200,
+                                                on_submit=self.analizar_expresion_click)
+        self.mensaje_expr = ft.Text(visible=False)
+        self.resumen_expr = ft.Text(weight=ft.FontWeight.BOLD, visible=False)
+        self.etiqueta_paso_expr = ft.Text(weight=ft.FontWeight.BOLD)
+        self.boton_inicio_expr = ft.IconButton(icon=ft.Icons.FIRST_PAGE, tooltip="Primera pieza",
+                                               on_click=lambda e: self.ir_a_paso_expr(0))
+        self.boton_anterior_expr = ft.IconButton(icon=ft.Icons.CHEVRON_LEFT, tooltip="Pieza anterior",
+                                                 on_click=lambda e: self.ir_a_paso_expr(self.paso_construccion - 1))
+        self.boton_siguiente_expr = ft.IconButton(icon=ft.Icons.CHEVRON_RIGHT, tooltip="Pieza siguiente",
+                                                  on_click=lambda e: self.ir_a_paso_expr(self.paso_construccion + 1))
+        self.boton_final_expr = ft.IconButton(icon=ft.Icons.LAST_PAGE, tooltip="Última pieza",
+                                              on_click=lambda e: self.ir_a_paso_expr(len(self.construccion[2]) - 1))
+        self.caso_expr = ft.Text(selectable=True)
+        self.dibujo_expr = ft.Container()
+        self.boton_usar_expr = ft.Button(content="Usar el AFN-λ final como autómata actual", icon=ft.Icons.SWAP_HORIZ,
+                                         disabled=True, on_click=self.usar_afn_de_expresion)
+        self.vista_expresiones = ft.Column(spacing=14, scroll=ft.ScrollMode.AUTO, expand=True, controls=[
+            ft.Text("Ejercicio 2: de una expresión regular a un AFN-λ (Parte I del teorema de Kleene).",
+                    size=18, weight=ft.FontWeight.BOLD),
+            ft.Text("Notación del curso: + unión, yuxtaposición concatenación, * cerradura de Kleene, λ la cadena "
+                    "vacía, ∅ el lenguaje vacío y paréntesis. Una expresión mal escrita se rechaza con un mensaje "
+                    "que indica la posición del error.", color=GRIS),
+            ft.Row(wrap=True, controls=[
+                self.campo_expresion, self.campo_alfabeto_expr,
+                ft.Button(content="Construir AFN-λ", icon=ft.Icons.PLAY_ARROW, on_click=self.analizar_expresion_click)]),
+            self.mensaje_expr, self.resumen_expr,
+            ft.Row(wrap=True, controls=[self.boton_inicio_expr, self.boton_anterior_expr,
+                                         ft.Container(width=360, alignment=ft.Alignment.CENTER, content=self.etiqueta_paso_expr),
+                                         self.boton_siguiente_expr, self.boton_final_expr]),
+            self.caso_expr, self.dibujo_expr,
+            self.boton_usar_expr,
+            ft.Text("Al usarlo como autómata actual, las pestañas Conversiones (quitar λ, convertir a AFD, "
+                    "minimizar), Archivos (exportar a .jff) y Simulación (validar cadenas) completan el resto "
+                    "del Ejercicio 2 con los algoritmos de la Práctica 3.", size=12, color=GRIS),
+        ])
+
+    def analizar_expresion_click(self, e=None):
+        def accion():
+            resultado = K.analizar_expresion(self.campo_expresion.value or "", self.campo_alfabeto_expr.value or "")
+            self.construccion = resultado
+            self.paso_construccion = 0
+            self.avisar(self.mensaje_expr, "", GRIS)
+            self.avisar(self.resumen_expr, K.resumen_de_construccion(*resultado), AZUL)
+            self.boton_usar_expr.disabled = False
+            self._refrescar_expresiones()
+            self.page.update()
+        self.intentar(self.mensaje_expr, accion)
+
+    def ir_a_paso_expr(self, k):
+        if not self.construccion:
+            return
+        pasos = self.construccion[2]
+        if 0 <= k < len(pasos):
+            self.paso_construccion = k
+            self._refrescar_expresiones()
+            self.page.update()
+
+    def _refrescar_expresiones(self):
+        hay = self.construccion is not None
+        for boton in (self.boton_inicio_expr, self.boton_anterior_expr, self.boton_siguiente_expr, self.boton_final_expr):
+            boton.disabled = not hay
+        if not hay:
+            self.etiqueta_paso_expr.value = "Sin construcción"
+            self.caso_expr.value = ""
+            self.dibujo_expr.content = None
+            return
+        pasos = self.construccion[2]
+        k = self.paso_construccion
+        self.boton_inicio_expr.disabled = self.boton_anterior_expr.disabled = k == 0
+        self.boton_siguiente_expr.disabled = self.boton_final_expr.disabled = k == len(pasos) - 1
+        self.etiqueta_paso_expr.value = K.titulo_de_paso_construccion(pasos, k)
+        self.caso_expr.value = pasos[k].caso
+        self.dibujo_expr.content = imagen_del_automata(D.svg_automata(pasos[k].automata), 620, 320)
+
+    def usar_afn_de_expresion(self, e=None):
+        if self.construccion:
+            afn = self.construccion[1]
+            self.a = afn
+            self.mostrar_lambda = True
+            self.resultado = None
+            self.cambio(editor=True)
+            self._mostrar_resultado_vacio()
+
+    # ================================================================== Práctica 4: Ejercicio 3
+
+    def _armar_automata_a_expresion(self):
+        self.eliminacion = None         # (expresión, orden, pasos) de la última eliminación
+        self.paso_eliminacion = 0
+        self.mensaje_aer = ft.Text(visible=False)
+        self.resultado_determinismo = ft.Text(selectable=True)
+        self.etiqueta_paso_aer = ft.Text(weight=ft.FontWeight.BOLD)
+        self.boton_inicio_aer = ft.IconButton(icon=ft.Icons.FIRST_PAGE, tooltip="Antes de eliminar nada",
+                                              on_click=lambda e: self.ir_a_paso_aer(0))
+        self.boton_anterior_aer = ft.IconButton(icon=ft.Icons.CHEVRON_LEFT, tooltip="Paso anterior",
+                                                on_click=lambda e: self.ir_a_paso_aer(self.paso_eliminacion - 1))
+        self.boton_siguiente_aer = ft.IconButton(icon=ft.Icons.CHEVRON_RIGHT, tooltip="Eliminar el siguiente estado",
+                                                 on_click=lambda e: self.ir_a_paso_aer(self.paso_eliminacion + 1))
+        self.boton_final_aer = ft.IconButton(icon=ft.Icons.LAST_PAGE, tooltip="Al final",
+                                             on_click=lambda e: self.ir_a_paso_aer(len(self.eliminacion[2])))
+        self.tabla_eliminacion = ft.Column()
+        self.expresion_final = ft.Text(selectable=True, size=16, weight=ft.FontWeight.BOLD)
+        self.resultado_comparacion = ft.Column()
+        self.vista_automata_a_expresion = ft.Column(spacing=14, scroll=ft.ScrollMode.AUTO, expand=True, controls=[
+            ft.Text("Ejercicio 3: del autómata actual (pestaña Archivos) a una expresión regular, por "
+                    "eliminación de estados sobre el autómata generalizado.", size=18, weight=ft.FontWeight.BOLD),
+            ft.Row(wrap=True, controls=[
+                ft.Button(content="Verificar que sea un AFD", icon=ft.Icons.FACT_CHECK,
+                          on_click=self.verificar_determinismo_click),
+                ft.Button(content="Eliminar estados (paso a paso)", icon=ft.Icons.PLAY_ARROW,
+                          on_click=self.eliminar_estados_click)]),
+            self.mensaje_aer, self.resultado_determinismo,
+            ft.Row(wrap=True, controls=[self.boton_inicio_aer, self.boton_anterior_aer,
+                                         ft.Container(width=360, alignment=ft.Alignment.CENTER, content=self.etiqueta_paso_aer),
+                                         self.boton_siguiente_aer, self.boton_final_aer]),
+            self.tabla_eliminacion,
+            ft.Text("Expresión obtenida", weight=ft.FontWeight.BOLD), self.expresion_final,
+            ft.Divider(),
+            ft.Text("Comprobar con el Ejercicio 2: reconstruye el AFN-λ de la expresión obtenida y compara su AFD "
+                    "mínimo con el del autómata actual, con la prueba de equivalencia de la Práctica 3.", color=GRIS),
+            ft.Button(content="Reconstruir y comparar", icon=ft.Icons.COMPARE_ARROWS,
+                      on_click=self.reconstruir_y_comparar_click),
+            self.resultado_comparacion,
+        ])
+
+    def verificar_determinismo_click(self, e=None):
+        def accion():
+            es_afd, motivo = K.verificar_determinismo(self.a)
+            if es_afd:
+                self.avisar(self.resultado_determinismo, "Es un AFD: se puede aplicar la eliminación de estados.", VERDE)
+            else:
+                self.avisar(self.resultado_determinismo, f"No es un AFD: {motivo}", ROJO)
+            self.page.update()
+        self.intentar(self.mensaje_aer, accion)
+
+    def eliminar_estados_click(self, e=None):
+        def accion():
+            es_afd, motivo = K.verificar_determinismo(self.a)
+            if not es_afd:
+                raise ValueError(f"No es un AFD: {motivo}")
+            er, orden, pasos = X.desde_automata(self.a)
+            self.eliminacion = (er, orden, pasos)
+            self.paso_eliminacion = 0
+            self.expresion_final.value = str(er)
+            self.avisar(self.mensaje_aer, "", GRIS)
+            self.resultado_comparacion.controls = []
+            self._refrescar_eliminacion()
+            self.page.update()
+        self.intentar(self.mensaje_aer, accion)
+
+    def ir_a_paso_aer(self, k):
+        if not self.eliminacion:
+            return
+        pasos = self.eliminacion[2]
+        if 0 <= k <= len(pasos):
+            self.paso_eliminacion = k
+            self._refrescar_eliminacion()
+            self.page.update()
+
+    def _refrescar_eliminacion(self):
+        hay = self.eliminacion is not None
+        for boton in (self.boton_inicio_aer, self.boton_anterior_aer, self.boton_siguiente_aer, self.boton_final_aer):
+            boton.disabled = not hay
+        if not hay:
+            self.etiqueta_paso_aer.value = "Sin eliminación"
+            self.tabla_eliminacion.controls = []
+            return
+        pasos = self.eliminacion[2]
+        k = self.paso_eliminacion
+        self.boton_inicio_aer.disabled = self.boton_anterior_aer.disabled = k == 0
+        self.boton_siguiente_aer.disabled = self.boton_final_aer.disabled = k == len(pasos)
+        self.etiqueta_paso_aer.value = K.titulo_de_paso_eliminacion(pasos, k)
+        filas = K.filas_del_automata_generalizado_inicial(self.a) if k == 0 else K.filas_de_un_paso_de_eliminacion(pasos[k - 1])
+        self.tabla_eliminacion.controls = [ft.Row(scroll=ft.ScrollMode.AUTO,
+                                                   controls=[tabla_de_datos(["Origen", "Destino", "Expresión"], filas)])]
+
+    def reconstruir_y_comparar_click(self, e=None):
+        def accion():
+            if not self.eliminacion:
+                raise ValueError("Primero elimina los estados para obtener la expresión.")
+            er = self.eliminacion[0]
+            resultado = K.reconstruir_y_comparar(self.a, er, self.a.alfabeto)
+            self.resultado_comparacion.controls = [ft.Text(x, selectable=True, size=13) for x in K.lineas_de_equivalencia(resultado)]
+            self.page.update()
+        self.intentar(self.mensaje_aer, accion)
+
+    # ================================================================== Práctica 4: Ejercicio 4
+
+    def _armar_validadores(self):
+        self.validador_actual = V.VALIDADORES[0]
+        self.etapas_validador = {}      # clave -> EtapasValidador; se construye una sola vez por validador
+        self.mensaje_validador = ft.Text(visible=False)
+        self.selector_validador = ft.Dropdown(
+            label="Validador", width=460, value=self.validador_actual.clave,
+            options=[ft.DropdownOption(key=v.clave, text=v.titulo) for v in V.VALIDADORES],
+            on_select=self.cambiar_validador)
+        self.notacion_validador = ft.Text(selectable=True, size=15)
+        self.leyenda_validador = ft.Text(selectable=True, size=12, color=GRIS)
+        self.python_re_validador = ft.Text(selectable=True, size=12)
+        self.estados_validador = ft.Text(weight=ft.FontWeight.BOLD)
+        self.justificacion_validador = ft.Text(selectable=True)
+        self.campo_validar = ft.TextField(label="Texto a validar", width=360, on_submit=self.validar_con_validador_click)
+        self.resultado_validador = ft.Text(visible=False, weight=ft.FontWeight.BOLD)
+        self.dibujo_validador = ft.Container()
+        self.vista_validadores = ft.Column(spacing=14, scroll=ft.ScrollMode.AUTO, expand=True, controls=[
+            ft.Text("Ejercicio 4: aplicaciones. Cada validador se construye con el Ejercicio 2 (expresión → AFN-λ) "
+                    "y se reduce con la Práctica 3 (quitar λ, subconjuntos, minimizar).", size=18, weight=ft.FontWeight.BOLD),
+            self.selector_validador,
+            ft.Text("Notación del curso", weight=ft.FontWeight.BOLD), self.notacion_validador, self.leyenda_validador,
+            ft.Text("Traducción a la sintaxis de re de Python", weight=ft.FontWeight.BOLD), self.python_re_validador,
+            self.estados_validador,
+            ft.Text("Qué casos quedan fuera de la expresión", weight=ft.FontWeight.BOLD), self.justificacion_validador,
+            ft.Row(wrap=True, controls=[
+                self.campo_validar,
+                ft.Button(content="Validar", icon=ft.Icons.PLAY_ARROW, on_click=self.validar_con_validador_click)]),
+            self.mensaje_validador, self.resultado_validador,
+            ft.Text("AFD mínimo", weight=ft.FontWeight.BOLD), self.dibujo_validador,
+        ])
+        self._refrescar_validador()
+
+    def _etapas_del_validador_actual(self):
+        clave = self.validador_actual.clave
+        if clave not in self.etapas_validador:
+            self.etapas_validador[clave] = K.construir_validador(self.validador_actual)
+        return self.etapas_validador[clave]
+
+    def cambiar_validador(self, e=None):
+        self.validador_actual = V.POR_CLAVE[self.selector_validador.value]
+        self.avisar(self.resultado_validador, "", GRIS)
+        self._refrescar_validador()
+        self.page.update()
+
+    def _refrescar_validador(self):
+        v = self.validador_actual
+        self.notacion_validador.value = v.notacion_abreviada
+        self.leyenda_validador.value = v.leyenda
+        self.python_re_validador.value = v.python_re
+        etapas = self._etapas_del_validador_actual()
+        self.estados_validador.value = (f"AFD antes de minimizar: {len(etapas.afd.estados)} estados. "
+                                        f"AFD mínimo: {len(etapas.minimo.estados)} estados.")
+        self.justificacion_validador.value = v.justificacion
+        self.dibujo_validador.content = imagen_del_automata(D.svg_automata(etapas.minimo), 700, 340)
+
+    def validar_con_validador_click(self, e=None):
+        def accion():
+            etapas = self._etapas_del_validador_actual()
+            veredicto, explicacion = K.validar_con_validador(self.validador_actual, etapas, self.campo_validar.value or "")
+            self.resultado_validador.value = f"{veredicto}: {explicacion}"
+            self.resultado_validador.color = VERDE if veredicto == "ACEPTADA" else ROJO
+            self.resultado_validador.visible = True
+            self.avisar(self.mensaje_validador, "", GRIS)
+            self.page.update()
+        self.intentar(self.mensaje_validador, accion)
 
 
 def main(page: ft.Page):

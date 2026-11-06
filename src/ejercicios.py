@@ -438,3 +438,59 @@ AFD_COMO_AFN = {
     "121": "es una posición módulo 3 con una bandera: no hay elección que adivinar",
     "122": "es una ventana de memoria acotada: no hay elección que adivinar",
 }
+
+
+# ---------------------------------------------------------------------------
+# Práctica 4: expresiones y autómatas de la Lista 4 (teorema de Kleene)
+# ---------------------------------------------------------------------------
+# La Lista 3 llega hasta el ejercicio 263 (arriba); la Lista 4 continúa la numeración desde
+# el 264. Los ejercicios 241 a 253 de la Lista 3 son opcionales (sin asterisco): la entrega de
+# Lista 3 del propio curso (que cubre 151 a 263) no los incluye, así que no hay un enunciado
+# propio al que compararlos; el Ejercicio 2 se documenta con los de la Lista 4 (obligatorios,
+# con asterisco) y con una comprobación exhaustiva aparte (tests/test_expresiones.py).
+
+@dataclass(frozen=True)
+class EntregaExpresion:
+    """Una expresión de la Lista 4 para el Ejercicio 2 de la Práctica 4 (de expresión regular a
+    AFN-λ): el texto en la notación del curso, con sus abreviaturas ya expandidas, y el alfabeto."""
+    nombre: str
+    ejercicio: str
+    texto: str
+    alfabeto: str
+    descripcion: str
+
+
+EXPRESIONES_LISTA4 = [
+    EntregaExpresion("Ej_272a", "272(a)", "a+b*", "ab", "a + b*"),
+    EntregaExpresion("Ej_272b", "272(b)", "(ab)*a", "ab", "(ab)*a"),
+    EntregaExpresion("Ej_272c", "272(c)", "(a+b)*abb", "ab", "(a+b)*abb"),
+    EntregaExpresion("Ej_272d", "272(d)", "a(ba)*+b", "ab", "a(ba)* + b"),
+    EntregaExpresion("Ej_272e", "272(e)", "(a+λ)(b+∅)", "ab", "(a+λ)(b+∅): los casos básicos λ y ∅ dentro de una unión"),
+    EntregaExpresion("Ej_278", "278", "(a+b)*b", "ab", "El ciclo completo: Parte I, quitar λ, subconjuntos, minimizar y Arden"),
+]
+
+POR_NOMBRE_EXPRESION = {e.nombre: e for e in EXPRESIONES_LISTA4}
+
+# Cadenas del ejercicio 273: se validan contra los autómatas de 272(b) y 272(c).
+CADENAS_273 = ("aba", "ab", "babb", "abab")
+
+
+def t276():
+    """Ejercicio 276 de la Lista 4: AFD sobre {a,b} cuyo número de letras «a» es múltiplo de 3
+    (A es inicial y de aceptación)."""
+    return _tabla("ab", {"A": "B A", "B": "C B", "C": "A C"}, "A")
+
+
+def t277():
+    """Ejercicio 277 de la Lista 4: AFD sobre {0,1} (figura del enunciado)."""
+    return _tabla("01", {"A": "A B", "B": "A B"}, "B")
+
+
+AUTOMATAS_LISTA4 = [
+    _e("practica4", "Ej_276_tabla", "276", "AFD: múltiplos de 3 letras «a» (Lema de Arden)", t276),
+    _e("practica4", "Ej_277_tabla", "277", "AFD de la figura del enunciado", t277),
+]
+
+# Registro propio, separado de POR_NOMBRE y ENTREGAS (de la Lista 3): así las pruebas que ya
+# existían para esas dos colecciones, cerradas sobre la Lista 3, no cambian de tamaño.
+POR_NOMBRE_LISTA4 = {e.nombre: e for e in AUTOMATAS_LISTA4}
