@@ -28,6 +28,8 @@ Los ejercicios 254 a 258 de la Lista 3 —los cinco autómatas del Ejercicio 1 d
    | 257 | B, C, A | `((1+01*0)(0+1))*(01*+1+01*0)` |
    | 258 | B, A, C | `(0+1)(01+(1+00)(0+1))*` |
 
+Captura de la pestaña *Autómata → expresión* con el ejercicio 254 (autómata generalizado antes de eliminar y expresión obtenida): `evidencias/practica4/ejercicio3_eliminacion_254.jpg`.
+
 2. **La expresión, reconstruida, equivale al autómata original.** `tests/test_expresiones.py::test_los_cinco_autómatas_254_a_258_se_recuperan_con_desde_expresion` toma cada una de esas cinco expresiones, les aplica el Ejercicio 2 completo (Thompson, quitar λ, subconjuntos, minimizar) y compara el resultado con el AFD mínimo del autómata original por `comparar_por_minimo`: los cinco coinciden. Esta es la comprobación que pide el enunciado ("conviertiendo ambas en AFD mínimos con el Ejercicio 2 y comparándolos con la prueba de equivalencia de la Práctica 3"), aplicada a la expresión de JFLAP indirectamente: como `docs/practica3/01-afd-a-er-jflap.md` ya estableció que la expresión de JFLAP es equivalente a la de este software para cada uno de los cinco, y ahora la expresión de este software se comprueba equivalente al autómata reconstruido, las tres puntas de la comparación (JFLAP, este software, el autómata reconstruido) quedan conectadas.
 
 ## 3.5 Ejercicio 276: Lema de Arden

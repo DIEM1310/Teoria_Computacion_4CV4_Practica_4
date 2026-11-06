@@ -79,7 +79,7 @@ AFN-λ final: **8 estados, 9 transiciones**. AFD, 4 estados; AFD mínimo, **3 es
 | 7 | `b` | básico «b» |
 | 8 | `(a+b)*abb` | concatenación de **4** partes: `(a+b)*`, `a`, `b`, `b` (sin estados nuevos) |
 
-AFN-λ final: **14 estados, 16 transiciones** (q0 a q13). Sin λ, 14 estados; AFD, 5 estados; AFD mínimo, **4 estados**. Es el ejemplo con más piezas de los cinco porque la concatenación final tiene cuatro factores, no dos.
+AFN-λ final: **14 estados, 16 transiciones** (q0 a q13). Sin λ, 14 estados; AFD, 5 estados; AFD mínimo, **4 estados**. Es el ejemplo con más piezas de los cinco porque la concatenación final tiene cuatro factores, no dos. Captura de la última pieza en el simulador: `evidencias/practica4/ejercicio2_thompson_272c_final.jpg`; captura de ese mismo AFN-λ ya cargado en la pestaña *Conversiones* y con las transiciones λ quitadas: `evidencias/practica4/ejercicio2_encadenado_con_conversiones.jpg`.
 
 ### 272(d). a(ba)\* + b
 

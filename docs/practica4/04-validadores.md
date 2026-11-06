@@ -52,3 +52,5 @@ Con la misma semilla (`"practica4"` por omisión) el conjunto es siempre el mism
 | Contraseña | ≥ 500 | 0 |
 
 La prueba corre en la integración continua con Python 3.11, 3.12 y 3.13 (`.github/workflows/pruebas.yml`, sin cambios desde la Práctica 2), igual que el resto de la suite.
+
+Capturas del simulador: `evidencias/practica4/ejercicio4_validador_fecha.jpg` (fecha inválida `32/01/2027`, rechazada) y `evidencias/practica4/ejercicio4_validador_contrasena.jpg` (muestra los 254 estados antes de minimizar y los 10 después).
