@@ -1,0 +1,200 @@
+{
+  "tipo": "AFD",
+  "alfabeto": [
+    "a",
+    "b"
+  ],
+  "estados": [
+    "{q0}",
+    "{q0,q1}",
+    "{q0,q2}",
+    "{q0,q3}",
+    "{q0,q4}",
+    "{q0,q1,q5}",
+    "{q0,q2,q6}",
+    "{q0,q1,q6}",
+    "{q0,q3,q6}",
+    "{q0,q4,q6}",
+    "{q0,q1,q5,q6}",
+    "{q0,q6}"
+  ],
+  "inicial": "{q0}",
+  "aceptacion": [
+    "{q0,q2,q6}",
+    "{q0,q1,q6}",
+    "{q0,q3,q6}",
+    "{q0,q4,q6}",
+    "{q0,q1,q5,q6}",
+    "{q0,q6}"
+  ],
+  "transiciones": [
+    {
+      "desde": "{q0}",
+      "lee": "a",
+      "hacia": [
+        "{q0,q1}"
+      ]
+    },
+    {
+      "desde": "{q0}",
+      "lee": "b",
+      "hacia": [
+        "{q0}"
+      ]
+    },
+    {
+      "desde": "{q0,q1}",
+      "lee": "a",
+      "hacia": [
+        "{q0,q1}"
+      ]
+    },
+    {
+      "desde": "{q0,q1}",
+      "lee": "b",
+      "hacia": [
+        "{q0,q2}"
+      ]
+    },
+    {
+      "desde": "{q0,q2}",
+      "lee": "a",
+      "hacia": [
+        "{q0,q1}"
+      ]
+    },
+    {
+      "desde": "{q0,q2}",
+      "lee": "b",
+      "hacia": [
+        "{q0,q3}"
+      ]
+    },
+    {
+      "desde": "{q0,q3}",
+      "lee": "a",
+      "hacia": [
+        "{q0,q1}"
+      ]
+    },
+    {
+      "desde": "{q0,q3}",
+      "lee": "b",
+      "hacia": [
+        "{q0,q4}"
+      ]
+    },
+    {
+      "desde": "{q0,q4}",
+      "lee": "a",
+      "hacia": [
+        "{q0,q1,q5}"
+      ]
+    },
+    {
+      "desde": "{q0,q4}",
+      "lee": "b",
+      "hacia": [
+        "{q0}"
+      ]
+    },
+    {
+      "desde": "{q0,q1,q5}",
+      "lee": "a",
+      "hacia": [
+        "{q0,q1}"
+      ]
+    },
+    {
+      "desde": "{q0,q1,q5}",
+      "lee": "b",
+      "hacia": [
+        "{q0,q2,q6}"
+      ]
+    },
+    {
+      "desde": "{q0,q2,q6}",
+      "lee": "a",
+      "hacia": [
+        "{q0,q1,q6}"
+      ]
+    },
+    {
+      "desde": "{q0,q2,q6}",
+      "lee": "b",
+      "hacia": [
+        "{q0,q3,q6}"
+      ]
+    },
+    {
+      "desde": "{q0,q1,q6}",
+      "lee": "a",
+      "hacia": [
+        "{q0,q1,q6}"
+      ]
+    },
+    {
+      "desde": "{q0,q1,q6}",
+      "lee": "b",
+      "hacia": [
+        "{q0,q2,q6}"
+      ]
+    },
+    {
+      "desde": "{q0,q3,q6}",
+      "lee": "a",
+      "hacia": [
+        "{q0,q1,q6}"
+      ]
+    },
+    {
+      "desde": "{q0,q3,q6}",
+      "lee": "b",
+      "hacia": [
+        "{q0,q4,q6}"
+      ]
+    },
+    {
+      "desde": "{q0,q4,q6}",
+      "lee": "a",
+      "hacia": [
+        "{q0,q1,q5,q6}"
+      ]
+    },
+    {
+      "desde": "{q0,q4,q6}",
+      "lee": "b",
+      "hacia": [
+        "{q0,q6}"
+      ]
+    },
+    {
+      "desde": "{q0,q1,q5,q6}",
+      "lee": "a",
+      "hacia": [
+        "{q0,q1,q6}"
+      ]
+    },
+    {
+      "desde": "{q0,q1,q5,q6}",
+      "lee": "b",
+      "hacia": [
+        "{q0,q2,q6}"
+      ]
+    },
+    {
+      "desde": "{q0,q6}",
+      "lee": "a",
+      "hacia": [
+        "{q0,q1,q6}"
+      ]
+    },
+    {
+      "desde": "{q0,q6}",
+      "lee": "b",
+      "hacia": [
+        "{q0,q6}"
+      ]
+    }
+  ]
+}

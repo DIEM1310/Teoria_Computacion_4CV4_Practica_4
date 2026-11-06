@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<automata tipo="AFD">
+  <alfabeto><simbolo>0</simbolo><simbolo>1</simbolo></alfabeto>
+  <estados>
+    <estado nombre="{q0}" inicial="true"/>
+    <estado nombre="{q0,q1}"/>
+    <estado nombre="{q0,q2}" aceptacion="true"/>
+  </estados>
+  <transiciones>
+    <transicion desde="{q0}" lee="0" hacia="{q0,q1}"/>
+    <transicion desde="{q0}" lee="1" hacia="{q0}"/>
+    <transicion desde="{q0,q1}" lee="0" hacia="{q0,q1}"/>
+    <transicion desde="{q0,q1}" lee="1" hacia="{q0,q2}"/>
+    <transicion desde="{q0,q2}" lee="0" hacia="{q0,q1}"/>
+    <transicion desde="{q0,q2}" lee="1" hacia="{q0}"/>
+  </transiciones>
+</automata>

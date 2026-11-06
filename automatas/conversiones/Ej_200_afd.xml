@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<automata tipo="AFD">
+  <alfabeto><simbolo>0</simbolo><simbolo>1</simbolo></alfabeto>
+  <estados>
+    <estado nombre="{A}" inicial="true"/>
+    <estado nombre="{C,D,E,F}" aceptacion="true"/>
+    <estado nombre="{A,B,C,E,F}" aceptacion="true"/>
+    <estado nombre="{A,B,C,E}" aceptacion="true"/>
+    <estado nombre="{A,B,C,D,E,F}" aceptacion="true"/>
+    <estado nombre="{B,C,D,E,F}" aceptacion="true"/>
+  </estados>
+  <transiciones>
+    <transicion desde="{A}" lee="0" hacia="{C,D,E,F}"/>
+    <transicion desde="{A}" lee="1" hacia="{A,B,C,E,F}"/>
+    <transicion desde="{C,D,E,F}" lee="0" hacia="{A,B,C,E}"/>
+    <transicion desde="{C,D,E,F}" lee="1" hacia="{A,B,C,D,E,F}"/>
+    <transicion desde="{A,B,C,E,F}" lee="0" hacia="{B,C,D,E,F}"/>
+    <transicion desde="{A,B,C,E,F}" lee="1" hacia="{A,B,C,D,E,F}"/>
+    <transicion desde="{A,B,C,E}" lee="0" hacia="{C,D,E,F}"/>
+    <transicion desde="{A,B,C,E}" lee="1" hacia="{A,B,C,D,E,F}"/>
+    <transicion desde="{A,B,C,D,E,F}" lee="0" hacia="{A,B,C,D,E,F}"/>
+    <transicion desde="{A,B,C,D,E,F}" lee="1" hacia="{A,B,C,D,E,F}"/>
+    <transicion desde="{B,C,D,E,F}" lee="0" hacia="{A,B,C,D,E,F}"/>
+    <transicion desde="{B,C,D,E,F}" lee="1" hacia="{A,B,C,D,E,F}"/>
+  </transiciones>
+</automata>

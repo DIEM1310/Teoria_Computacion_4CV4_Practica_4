@@ -1,0 +1,183 @@
+{
+  "tipo": "AFD",
+  "alfabeto": [
+    "0",
+    "1"
+  ],
+  "estados": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K"
+  ],
+  "inicial": "A",
+  "aceptacion": [
+    "E",
+    "G",
+    "H",
+    "J"
+  ],
+  "transiciones": [
+    {
+      "desde": "A",
+      "lee": "0",
+      "hacia": [
+        "D"
+      ]
+    },
+    {
+      "desde": "A",
+      "lee": "1",
+      "hacia": [
+        "K"
+      ]
+    },
+    {
+      "desde": "B",
+      "lee": "0",
+      "hacia": [
+        "H"
+      ]
+    },
+    {
+      "desde": "B",
+      "lee": "1",
+      "hacia": [
+        "K"
+      ]
+    },
+    {
+      "desde": "C",
+      "lee": "0",
+      "hacia": [
+        "I"
+      ]
+    },
+    {
+      "desde": "C",
+      "lee": "1",
+      "hacia": [
+        "E"
+      ]
+    },
+    {
+      "desde": "D",
+      "lee": "0",
+      "hacia": [
+        "C"
+      ]
+    },
+    {
+      "desde": "D",
+      "lee": "1",
+      "hacia": [
+        "G"
+      ]
+    },
+    {
+      "desde": "E",
+      "lee": "0",
+      "hacia": [
+        "K"
+      ]
+    },
+    {
+      "desde": "E",
+      "lee": "1",
+      "hacia": [
+        "I"
+      ]
+    },
+    {
+      "desde": "F",
+      "lee": "0",
+      "hacia": [
+        "B"
+      ]
+    },
+    {
+      "desde": "F",
+      "lee": "1",
+      "hacia": [
+        "E"
+      ]
+    },
+    {
+      "desde": "G",
+      "lee": "0",
+      "hacia": [
+        "C"
+      ]
+    },
+    {
+      "desde": "G",
+      "lee": "1",
+      "hacia": [
+        "I"
+      ]
+    },
+    {
+      "desde": "H",
+      "lee": "0",
+      "hacia": [
+        "C"
+      ]
+    },
+    {
+      "desde": "H",
+      "lee": "1",
+      "hacia": [
+        "B"
+      ]
+    },
+    {
+      "desde": "I",
+      "lee": "0",
+      "hacia": [
+        "G"
+      ]
+    },
+    {
+      "desde": "I",
+      "lee": "1",
+      "hacia": [
+        "K"
+      ]
+    },
+    {
+      "desde": "J",
+      "lee": "0",
+      "hacia": [
+        "F"
+      ]
+    },
+    {
+      "desde": "J",
+      "lee": "1",
+      "hacia": [
+        "B"
+      ]
+    },
+    {
+      "desde": "K",
+      "lee": "0",
+      "hacia": [
+        "C"
+      ]
+    },
+    {
+      "desde": "K",
+      "lee": "1",
+      "hacia": [
+        "F"
+      ]
+    }
+  ]
+}

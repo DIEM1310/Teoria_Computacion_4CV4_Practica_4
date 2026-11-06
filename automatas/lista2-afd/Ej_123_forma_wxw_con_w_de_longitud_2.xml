@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<automata tipo="AFD">
+  <alfabeto><simbolo>a</simbolo><simbolo>b</simbolo></alfabeto>
+  <estados>
+    <estado nombre="q0" inicial="true"/>
+    <estado nombre="q1"/>
+    <estado nombre="q2"/>
+    <estado nombre="q3"/>
+    <estado nombre="q4"/>
+    <estado nombre="q5"/>
+    <estado nombre="q6"/>
+    <estado nombre="q7"/>
+    <estado nombre="q8"/>
+    <estado nombre="q9"/>
+    <estado nombre="q10"/>
+    <estado nombre="q11" aceptacion="true"/>
+    <estado nombre="q12" aceptacion="true"/>
+    <estado nombre="q13" aceptacion="true"/>
+    <estado nombre="q14" aceptacion="true"/>
+  </estados>
+  <transiciones>
+    <transicion desde="q0" lee="a" hacia="q1"/>
+    <transicion desde="q0" lee="b" hacia="q2"/>
+    <transicion desde="q1" lee="a" hacia="q3"/>
+    <transicion desde="q1" lee="b" hacia="q4"/>
+    <transicion desde="q2" lee="a" hacia="q5"/>
+    <transicion desde="q2" lee="b" hacia="q6"/>
+    <transicion desde="q3" lee="a" hacia="q7"/>
+    <transicion desde="q3" lee="b" hacia="q3"/>
+    <transicion desde="q4" lee="a" hacia="q8"/>
+    <transicion desde="q4" lee="b" hacia="q4"/>
+    <transicion desde="q5" lee="a" hacia="q5"/>
+    <transicion desde="q5" lee="b" hacia="q9"/>
+    <transicion desde="q6" lee="a" hacia="q6"/>
+    <transicion desde="q6" lee="b" hacia="q10"/>
+    <transicion desde="q7" lee="a" hacia="q11"/>
+    <transicion desde="q7" lee="b" hacia="q3"/>
+    <transicion desde="q8" lee="a" hacia="q8"/>
+    <transicion desde="q8" lee="b" hacia="q12"/>
+    <transicion desde="q9" lee="a" hacia="q13"/>
+    <transicion desde="q9" lee="b" hacia="q9"/>
+    <transicion desde="q10" lee="a" hacia="q6"/>
+    <transicion desde="q10" lee="b" hacia="q14"/>
+    <transicion desde="q11" lee="a" hacia="q11"/>
+    <transicion desde="q11" lee="b" hacia="q3"/>
+    <transicion desde="q12" lee="a" hacia="q8"/>
+    <transicion desde="q12" lee="b" hacia="q4"/>
+    <transicion desde="q13" lee="a" hacia="q5"/>
+    <transicion desde="q13" lee="b" hacia="q9"/>
+    <transicion desde="q14" lee="a" hacia="q6"/>
+    <transicion desde="q14" lee="b" hacia="q14"/>
+  </transiciones>
+</automata>

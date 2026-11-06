@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<structure>
+  <type>fa</type>
+  <automaton>
+    <state id="0" name="{q0}">
+      <x>80.0</x><y>135.0</y>
+      <initial/>
+    </state>
+    <state id="1" name="{q0,q1}">
+      <x>230.0</x><y>135.0</y>
+    </state>
+    <state id="2" name="{q0,q1,q2}">
+      <x>380.0</x><y>135.0</y>
+    </state>
+    <state id="3" name="{q0,q3}">
+      <x>530.0</x><y>135.0</y>
+    </state>
+    <state id="4" name="{q0,q1,q4}">
+      <x>680.0</x><y>135.0</y>
+    </state>
+    <state id="5" name="{q0,q5}">
+      <x>830.0</x><y>135.0</y>
+    </state>
+    <state id="6" name="{q0,q6}">
+      <x>980.0</x><y>135.0</y>
+    </state>
+    <state id="7" name="{q0,q1,q7}">
+      <x>1130.0</x><y>135.0</y>
+      <final/>
+    </state>
+    <state id="8" name="{q0,q7}">
+      <x>1280.0</x><y>80.0</y>
+      <final/>
+    </state>
+    <state id="9" name="{q0,q1,q2,q7}">
+      <x>1280.0</x><y>190.0</y>
+      <final/>
+    </state>
+    <state id="10" name="{q0,q3,q7}">
+      <x>1430.0</x><y>135.0</y>
+      <final/>
+    </state>
+    <state id="11" name="{q0,q1,q4,q7}">
+      <x>1580.0</x><y>135.0</y>
+      <final/>
+    </state>
+    <state id="12" name="{q0,q5,q7}">
+      <x>1730.0</x><y>135.0</y>
+      <final/>
+    </state>
+    <state id="13" name="{q0,q6,q7}">
+      <x>1880.0</x><y>135.0</y>
+      <final/>
+    </state>
+    <transition><from>0</from><to>0</to><read>0</read></transition>
+    <transition><from>0</from><to>1</to><read>1</read></transition>
+    <transition><from>0</from><to>0</to><read>2</read></transition>
+    <transition><from>1</from><to>0</to><read>0</read></transition>
+    <transition><from>1</from><to>2</to><read>1</read></transition>
+    <transition><from>1</from><to>0</to><read>2</read></transition>
+    <transition><from>2</from><to>3</to><read>0</read></transition>
+    <transition><from>2</from><to>2</to><read>1</read></transition>
+    <transition><from>2</from><to>0</to><read>2</read></transition>
+    <transition><from>3</from><to>0</to><read>0</read></transition>
+    <transition><from>3</from><to>4</to><read>1</read></transition>
+    <transition><from>3</from><to>0</to><read>2</read></transition>
+    <transition><from>4</from><to>5</to><read>0</read></transition>
+    <transition><from>4</from><to>2</to><read>1</read></transition>
+    <transition><from>4</from><to>0</to><read>2</read></transition>
+    <transition><from>5</from><to>6</to><read>0</read></transition>
+    <transition><from>5</from><to>1</to><read>1</read></transition>
+    <transition><from>5</from><to>0</to><read>2</read></transition>
+    <transition><from>6</from><to>0</to><read>0</read></transition>
+    <transition><from>6</from><to>7</to><read>1</read></transition>
+    <transition><from>6</from><to>0</to><read>2</read></transition>
+    <transition><from>7</from><to>8</to><read>0</read></transition>
+    <transition><from>7</from><to>9</to><read>1</read></transition>
+    <transition><from>7</from><to>8</to><read>2</read></transition>
+    <transition><from>8</from><to>8</to><read>0</read></transition>
+    <transition><from>8</from><to>7</to><read>1</read></transition>
+    <transition><from>8</from><to>8</to><read>2</read></transition>
+    <transition><from>9</from><to>10</to><read>0</read></transition>
+    <transition><from>9</from><to>9</to><read>1</read></transition>
+    <transition><from>9</from><to>8</to><read>2</read></transition>
+    <transition><from>10</from><to>8</to><read>0</read></transition>
+    <transition><from>10</from><to>11</to><read>1</read></transition>
+    <transition><from>10</from><to>8</to><read>2</read></transition>
+    <transition><from>11</from><to>12</to><read>0</read></transition>
+    <transition><from>11</from><to>9</to><read>1</read></transition>
+    <transition><from>11</from><to>8</to><read>2</read></transition>
+    <transition><from>12</from><to>13</to><read>0</read></transition>
+    <transition><from>12</from><to>7</to><read>1</read></transition>
+    <transition><from>12</from><to>8</to><read>2</read></transition>
+    <transition><from>13</from><to>8</to><read>0</read></transition>
+    <transition><from>13</from><to>7</to><read>1</read></transition>
+    <transition><from>13</from><to>8</to><read>2</read></transition>
+  </automaton>
+</structure>

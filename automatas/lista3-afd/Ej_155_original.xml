@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<automata tipo="AFD">
+  <alfabeto><simbolo>0</simbolo><simbolo>1</simbolo></alfabeto>
+  <estados>
+    <estado nombre="A" inicial="true"/>
+    <estado nombre="B"/>
+    <estado nombre="C"/>
+    <estado nombre="D"/>
+    <estado nombre="E"/>
+    <estado nombre="F" aceptacion="true"/>
+    <estado nombre="G"/>
+    <estado nombre="H"/>
+    <estado nombre="I"/>
+    <estado nombre="J"/>
+    <estado nombre="K"/>
+    <estado nombre="L"/>
+  </estados>
+  <transiciones>
+    <transicion desde="A" lee="0" hacia="B"/>
+    <transicion desde="A" lee="1" hacia="C"/>
+    <transicion desde="B" lee="0" hacia="D"/>
+    <transicion desde="B" lee="1" hacia="E"/>
+    <transicion desde="C" lee="0" hacia="K"/>
+    <transicion desde="C" lee="1" hacia="G"/>
+    <transicion desde="D" lee="0" hacia="H"/>
+    <transicion desde="D" lee="1" hacia="E"/>
+    <transicion desde="E" lee="0" hacia="F"/>
+    <transicion desde="E" lee="1" hacia="D"/>
+    <transicion desde="F" lee="0" hacia="J"/>
+    <transicion desde="F" lee="1" hacia="G"/>
+    <transicion desde="G" lee="0" hacia="E"/>
+    <transicion desde="G" lee="1" hacia="G"/>
+    <transicion desde="H" lee="0" hacia="B"/>
+    <transicion desde="H" lee="1" hacia="K"/>
+    <transicion desde="I" lee="0" hacia="C"/>
+    <transicion desde="I" lee="1" hacia="A"/>
+    <transicion desde="J" lee="0" hacia="D"/>
+    <transicion desde="J" lee="1" hacia="G"/>
+    <transicion desde="K" lee="0" hacia="F"/>
+    <transicion desde="K" lee="1" hacia="D"/>
+    <transicion desde="L" lee="0" hacia="C"/>
+    <transicion desde="L" lee="1" hacia="J"/>
+  </transiciones>
+</automata>

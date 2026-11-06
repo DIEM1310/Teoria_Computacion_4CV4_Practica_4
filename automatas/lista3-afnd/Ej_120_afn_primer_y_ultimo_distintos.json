@@ -1,0 +1,111 @@
+{
+  "tipo": "AFND",
+  "alfabeto": [
+    "0",
+    "1",
+    "2"
+  ],
+  "estados": [
+    "q0",
+    "p0",
+    "p1",
+    "p2",
+    "f"
+  ],
+  "inicial": "q0",
+  "aceptacion": [
+    "f"
+  ],
+  "transiciones": [
+    {
+      "desde": "q0",
+      "lee": "0",
+      "hacia": [
+        "p0"
+      ]
+    },
+    {
+      "desde": "q0",
+      "lee": "1",
+      "hacia": [
+        "p1"
+      ]
+    },
+    {
+      "desde": "q0",
+      "lee": "2",
+      "hacia": [
+        "p2"
+      ]
+    },
+    {
+      "desde": "p0",
+      "lee": "0",
+      "hacia": [
+        "p0"
+      ]
+    },
+    {
+      "desde": "p0",
+      "lee": "1",
+      "hacia": [
+        "p0",
+        "f"
+      ]
+    },
+    {
+      "desde": "p0",
+      "lee": "2",
+      "hacia": [
+        "p0",
+        "f"
+      ]
+    },
+    {
+      "desde": "p1",
+      "lee": "0",
+      "hacia": [
+        "p1",
+        "f"
+      ]
+    },
+    {
+      "desde": "p1",
+      "lee": "1",
+      "hacia": [
+        "p1"
+      ]
+    },
+    {
+      "desde": "p1",
+      "lee": "2",
+      "hacia": [
+        "p1",
+        "f"
+      ]
+    },
+    {
+      "desde": "p2",
+      "lee": "0",
+      "hacia": [
+        "p2",
+        "f"
+      ]
+    },
+    {
+      "desde": "p2",
+      "lee": "1",
+      "hacia": [
+        "p2",
+        "f"
+      ]
+    },
+    {
+      "desde": "p2",
+      "lee": "2",
+      "hacia": [
+        "p2"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "tipo": "AFND",
+  "alfabeto": [
+    "0",
+    "1",
+    "2"
+  ],
+  "estados": [
+    "q0",
+    "q1",
+    "q2",
+    "q3",
+    "q4",
+    "q5",
+    "q6"
+  ],
+  "inicial": "q0",
+  "aceptacion": [
+    "q6"
+  ],
+  "transiciones": [
+    {
+      "desde": "q0",
+      "lee": "0",
+      "hacia": [
+        "q0",
+        "q1"
+      ]
+    },
+    {
+      "desde": "q0",
+      "lee": "1",
+      "hacia": [
+        "q0"
+      ]
+    },
+    {
+      "desde": "q0",
+      "lee": "2",
+      "hacia": [
+        "q0"
+      ]
+    },
+    {
+      "desde": "q1",
+      "lee": "0",
+      "hacia": [
+        "q2"
+      ]
+    },
+    {
+      "desde": "q2",
+      "lee": "1",
+      "hacia": [
+        "q3"
+      ]
+    },
+    {
+      "desde": "q3",
+      "lee": "0",
+      "hacia": [
+        "q4"
+      ]
+    },
+    {
+      "desde": "q4",
+      "lee": "0",
+      "hacia": [
+        "q5"
+      ]
+    },
+    {
+      "desde": "q5",
+      "lee": "1",
+      "hacia": [
+        "q6"
+      ]
+    }
+  ]
+}

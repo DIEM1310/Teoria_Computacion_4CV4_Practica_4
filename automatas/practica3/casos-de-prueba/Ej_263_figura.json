@@ -1,0 +1,40 @@
+{
+  "tipo": "AFND",
+  "alfabeto": [
+    "0",
+    "1"
+  ],
+  "estados": [
+    "q0",
+    "q1",
+    "q2"
+  ],
+  "inicial": "q0",
+  "aceptacion": [
+    "q2"
+  ],
+  "transiciones": [
+    {
+      "desde": "q0",
+      "lee": "0",
+      "hacia": [
+        "q0",
+        "q1"
+      ]
+    },
+    {
+      "desde": "q0",
+      "lee": "1",
+      "hacia": [
+        "q0"
+      ]
+    },
+    {
+      "desde": "q1",
+      "lee": "1",
+      "hacia": [
+        "q2"
+      ]
+    }
+  ]
+}

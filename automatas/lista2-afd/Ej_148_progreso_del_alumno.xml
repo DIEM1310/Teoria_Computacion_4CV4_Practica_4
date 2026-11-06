@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<automata tipo="AFD">
+  <alfabeto><simbolo>A</simbolo><simbolo>N</simbolo><simbolo>P</simbolo><simbolo>S</simbolo></alfabeto>
+  <estados>
+    <estado nombre="q0" inicial="true"/>
+    <estado nombre="q1"/>
+    <estado nombre="q2"/>
+    <estado nombre="q3"/>
+    <estado nombre="q4" aceptacion="true"/>
+    <estado nombre="q5"/>
+    <estado nombre="q6"/>
+    <estado nombre="q7"/>
+    <estado nombre="q8"/>
+    <estado nombre="q9"/>
+    <estado nombre="q10"/>
+    <estado nombre="q11"/>
+  </estados>
+  <transiciones>
+    <transicion desde="q0" lee="A" hacia="q3"/>
+    <transicion desde="q0" lee="N" hacia="q2"/>
+    <transicion desde="q0" lee="P" hacia="q1"/>
+    <transicion desde="q0" lee="S" hacia="q3"/>
+    <transicion desde="q1" lee="A" hacia="q4"/>
+    <transicion desde="q1" lee="N" hacia="q3"/>
+    <transicion desde="q1" lee="P" hacia="q3"/>
+    <transicion desde="q1" lee="S" hacia="q5"/>
+    <transicion desde="q2" lee="A" hacia="q3"/>
+    <transicion desde="q2" lee="N" hacia="q7"/>
+    <transicion desde="q2" lee="P" hacia="q6"/>
+    <transicion desde="q2" lee="S" hacia="q3"/>
+    <transicion desde="q3" lee="A" hacia="q3"/>
+    <transicion desde="q3" lee="N" hacia="q3"/>
+    <transicion desde="q3" lee="P" hacia="q3"/>
+    <transicion desde="q3" lee="S" hacia="q3"/>
+    <transicion desde="q4" lee="A" hacia="q4"/>
+    <transicion desde="q4" lee="N" hacia="q4"/>
+    <transicion desde="q4" lee="P" hacia="q4"/>
+    <transicion desde="q4" lee="S" hacia="q4"/>
+    <transicion desde="q5" lee="A" hacia="q3"/>
+    <transicion desde="q5" lee="N" hacia="q9"/>
+    <transicion desde="q5" lee="P" hacia="q8"/>
+    <transicion desde="q5" lee="S" hacia="q3"/>
+    <transicion desde="q6" lee="A" hacia="q4"/>
+    <transicion desde="q6" lee="N" hacia="q3"/>
+    <transicion desde="q6" lee="P" hacia="q3"/>
+    <transicion desde="q6" lee="S" hacia="q9"/>
+    <transicion desde="q7" lee="A" hacia="q3"/>
+    <transicion desde="q7" lee="N" hacia="q0"/>
+    <transicion desde="q7" lee="P" hacia="q10"/>
+    <transicion desde="q7" lee="S" hacia="q3"/>
+    <transicion desde="q8" lee="A" hacia="q4"/>
+    <transicion desde="q8" lee="N" hacia="q3"/>
+    <transicion desde="q8" lee="P" hacia="q3"/>
+    <transicion desde="q8" lee="S" hacia="q0"/>
+    <transicion desde="q9" lee="A" hacia="q3"/>
+    <transicion desde="q9" lee="N" hacia="q0"/>
+    <transicion desde="q9" lee="P" hacia="q11"/>
+    <transicion desde="q9" lee="S" hacia="q3"/>
+    <transicion desde="q10" lee="A" hacia="q4"/>
+    <transicion desde="q10" lee="N" hacia="q3"/>
+    <transicion desde="q10" lee="P" hacia="q3"/>
+    <transicion desde="q10" lee="S" hacia="q0"/>
+    <transicion desde="q11" lee="A" hacia="q4"/>
+    <transicion desde="q11" lee="N" hacia="q3"/>
+    <transicion desde="q11" lee="P" hacia="q3"/>
+    <transicion desde="q11" lee="S" hacia="q0"/>
+  </transiciones>
+</automata>

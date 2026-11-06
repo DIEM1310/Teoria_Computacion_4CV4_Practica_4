@@ -1,0 +1,202 @@
+{
+  "tipo": "AFD",
+  "alfabeto": [
+    "0",
+    "1"
+  ],
+  "estados": [
+    "{A}",
+    "{A,B}",
+    "{A,C}",
+    "{A,D}",
+    "{A,B,D}",
+    "{A,E}",
+    "{A,C,E}",
+    "{A,B,E}",
+    "{A,C,D}",
+    "{A,D,E}",
+    "{A,B,D,E}",
+    "{A,C,D,E}"
+  ],
+  "inicial": "{A}",
+  "aceptacion": [
+    "{A,C}",
+    "{A,E}",
+    "{A,C,E}",
+    "{A,B,E}",
+    "{A,C,D}",
+    "{A,D,E}",
+    "{A,B,D,E}",
+    "{A,C,D,E}"
+  ],
+  "transiciones": [
+    {
+      "desde": "{A}",
+      "lee": "0",
+      "hacia": [
+        "{A,B}"
+      ]
+    },
+    {
+      "desde": "{A}",
+      "lee": "1",
+      "hacia": [
+        "{A}"
+      ]
+    },
+    {
+      "desde": "{A,B}",
+      "lee": "0",
+      "hacia": [
+        "{A,B}"
+      ]
+    },
+    {
+      "desde": "{A,B}",
+      "lee": "1",
+      "hacia": [
+        "{A,C}"
+      ]
+    },
+    {
+      "desde": "{A,C}",
+      "lee": "0",
+      "hacia": [
+        "{A,B}"
+      ]
+    },
+    {
+      "desde": "{A,C}",
+      "lee": "1",
+      "hacia": [
+        "{A,D}"
+      ]
+    },
+    {
+      "desde": "{A,D}",
+      "lee": "0",
+      "hacia": [
+        "{A,B,D}"
+      ]
+    },
+    {
+      "desde": "{A,D}",
+      "lee": "1",
+      "hacia": [
+        "{A,E}"
+      ]
+    },
+    {
+      "desde": "{A,B,D}",
+      "lee": "0",
+      "hacia": [
+        "{A,B,D}"
+      ]
+    },
+    {
+      "desde": "{A,B,D}",
+      "lee": "1",
+      "hacia": [
+        "{A,C,E}"
+      ]
+    },
+    {
+      "desde": "{A,E}",
+      "lee": "0",
+      "hacia": [
+        "{A,B,E}"
+      ]
+    },
+    {
+      "desde": "{A,E}",
+      "lee": "1",
+      "hacia": [
+        "{A,C,D}"
+      ]
+    },
+    {
+      "desde": "{A,C,E}",
+      "lee": "0",
+      "hacia": [
+        "{A,B,E}"
+      ]
+    },
+    {
+      "desde": "{A,C,E}",
+      "lee": "1",
+      "hacia": [
+        "{A,C,D}"
+      ]
+    },
+    {
+      "desde": "{A,B,E}",
+      "lee": "0",
+      "hacia": [
+        "{A,B,E}"
+      ]
+    },
+    {
+      "desde": "{A,B,E}",
+      "lee": "1",
+      "hacia": [
+        "{A,C,D}"
+      ]
+    },
+    {
+      "desde": "{A,C,D}",
+      "lee": "0",
+      "hacia": [
+        "{A,B,D}"
+      ]
+    },
+    {
+      "desde": "{A,C,D}",
+      "lee": "1",
+      "hacia": [
+        "{A,D,E}"
+      ]
+    },
+    {
+      "desde": "{A,D,E}",
+      "lee": "0",
+      "hacia": [
+        "{A,B,D,E}"
+      ]
+    },
+    {
+      "desde": "{A,D,E}",
+      "lee": "1",
+      "hacia": [
+        "{A,C,D,E}"
+      ]
+    },
+    {
+      "desde": "{A,B,D,E}",
+      "lee": "0",
+      "hacia": [
+        "{A,B,D,E}"
+      ]
+    },
+    {
+      "desde": "{A,B,D,E}",
+      "lee": "1",
+      "hacia": [
+        "{A,C,D,E}"
+      ]
+    },
+    {
+      "desde": "{A,C,D,E}",
+      "lee": "0",
+      "hacia": [
+        "{A,B,D,E}"
+      ]
+    },
+    {
+      "desde": "{A,C,D,E}",
+      "lee": "1",
+      "hacia": [
+        "{A,C,D,E}"
+      ]
+    }
+  ]
+}

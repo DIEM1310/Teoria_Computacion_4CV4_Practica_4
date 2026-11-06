@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<automata tipo="AFD">
+  <alfabeto><simbolo>0</simbolo><simbolo>1</simbolo></alfabeto>
+  <estados>
+    <estado nombre="{A}" inicial="true"/>
+    <estado nombre="{A,B}"/>
+    <estado nombre="{A,C}" aceptacion="true"/>
+    <estado nombre="{A,D}"/>
+    <estado nombre="{A,B,D}"/>
+    <estado nombre="{A,E}" aceptacion="true"/>
+    <estado nombre="{A,C,E}" aceptacion="true"/>
+    <estado nombre="{A,B,E}" aceptacion="true"/>
+    <estado nombre="{A,C,D}" aceptacion="true"/>
+    <estado nombre="{A,D,E}" aceptacion="true"/>
+    <estado nombre="{A,B,D,E}" aceptacion="true"/>
+    <estado nombre="{A,C,D,E}" aceptacion="true"/>
+  </estados>
+  <transiciones>
+    <transicion desde="{A}" lee="0" hacia="{A,B}"/>
+    <transicion desde="{A}" lee="1" hacia="{A}"/>
+    <transicion desde="{A,B}" lee="0" hacia="{A,B}"/>
+    <transicion desde="{A,B}" lee="1" hacia="{A,C}"/>
+    <transicion desde="{A,C}" lee="0" hacia="{A,B}"/>
+    <transicion desde="{A,C}" lee="1" hacia="{A,D}"/>
+    <transicion desde="{A,D}" lee="0" hacia="{A,B,D}"/>
+    <transicion desde="{A,D}" lee="1" hacia="{A,E}"/>
+    <transicion desde="{A,B,D}" lee="0" hacia="{A,B,D}"/>
+    <transicion desde="{A,B,D}" lee="1" hacia="{A,C,E}"/>
+    <transicion desde="{A,E}" lee="0" hacia="{A,B,E}"/>
+    <transicion desde="{A,E}" lee="1" hacia="{A,C,D}"/>
+    <transicion desde="{A,C,E}" lee="0" hacia="{A,B,E}"/>
+    <transicion desde="{A,C,E}" lee="1" hacia="{A,C,D}"/>
+    <transicion desde="{A,B,E}" lee="0" hacia="{A,B,E}"/>
+    <transicion desde="{A,B,E}" lee="1" hacia="{A,C,D}"/>
+    <transicion desde="{A,C,D}" lee="0" hacia="{A,B,D}"/>
+    <transicion desde="{A,C,D}" lee="1" hacia="{A,D,E}"/>
+    <transicion desde="{A,D,E}" lee="0" hacia="{A,B,D,E}"/>
+    <transicion desde="{A,D,E}" lee="1" hacia="{A,C,D,E}"/>
+    <transicion desde="{A,B,D,E}" lee="0" hacia="{A,B,D,E}"/>
+    <transicion desde="{A,B,D,E}" lee="1" hacia="{A,C,D,E}"/>
+    <transicion desde="{A,C,D,E}" lee="0" hacia="{A,B,D,E}"/>
+    <transicion desde="{A,C,D,E}" lee="1" hacia="{A,C,D,E}"/>
+  </transiciones>
+</automata>

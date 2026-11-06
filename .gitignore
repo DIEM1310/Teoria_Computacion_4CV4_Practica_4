@@ -1,0 +1,33 @@
+# Entornos virtuales de Python: se versiona requirements.txt, no el entorno
+venv/
+.venv/
+env/
+
+# Archivos generados por Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+build/
+dist/
+
+# Pruebas y cobertura
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Salidas que la aplicación puede volver a generar (Ejercicio 3)
+salidas/
+
+# Registros y variables de entorno locales
+*.log
+.env
+
+# Editores y sistema operativo
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Los archivos .jff (JFLAP) NO se excluyen: forman parte del entregable.

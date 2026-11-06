@@ -1,0 +1,121 @@
+{
+  "tipo": "AFD",
+  "alfabeto": [
+    "0",
+    "1"
+  ],
+  "estados": [
+    "A",
+    "{B,I}",
+    "{C,F}",
+    "D",
+    "E",
+    "{G,H}",
+    "K"
+  ],
+  "inicial": "A",
+  "aceptacion": [
+    "E",
+    "{G,H}"
+  ],
+  "transiciones": [
+    {
+      "desde": "A",
+      "lee": "0",
+      "hacia": [
+        "D"
+      ]
+    },
+    {
+      "desde": "A",
+      "lee": "1",
+      "hacia": [
+        "K"
+      ]
+    },
+    {
+      "desde": "{B,I}",
+      "lee": "0",
+      "hacia": [
+        "{G,H}"
+      ]
+    },
+    {
+      "desde": "{B,I}",
+      "lee": "1",
+      "hacia": [
+        "K"
+      ]
+    },
+    {
+      "desde": "{C,F}",
+      "lee": "0",
+      "hacia": [
+        "{B,I}"
+      ]
+    },
+    {
+      "desde": "{C,F}",
+      "lee": "1",
+      "hacia": [
+        "E"
+      ]
+    },
+    {
+      "desde": "D",
+      "lee": "0",
+      "hacia": [
+        "{C,F}"
+      ]
+    },
+    {
+      "desde": "D",
+      "lee": "1",
+      "hacia": [
+        "{G,H}"
+      ]
+    },
+    {
+      "desde": "E",
+      "lee": "0",
+      "hacia": [
+        "K"
+      ]
+    },
+    {
+      "desde": "E",
+      "lee": "1",
+      "hacia": [
+        "{B,I}"
+      ]
+    },
+    {
+      "desde": "{G,H}",
+      "lee": "0",
+      "hacia": [
+        "{C,F}"
+      ]
+    },
+    {
+      "desde": "{G,H}",
+      "lee": "1",
+      "hacia": [
+        "{B,I}"
+      ]
+    },
+    {
+      "desde": "K",
+      "lee": "0",
+      "hacia": [
+        "{C,F}"
+      ]
+    },
+    {
+      "desde": "K",
+      "lee": "1",
+      "hacia": [
+        "{C,F}"
+      ]
+    }
+  ]
+}

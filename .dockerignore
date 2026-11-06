@@ -1,0 +1,19 @@
+# Lo que NO debe viajar a la imagen. El contexto de construccion es la
+# raiz del repositorio (context: .. en entorno/compose.yml), asi que todo
+# lo que no se excluya aqui se envia a Docker en cada "docker compose build".
+.git
+venv/
+.venv/
+env/
+venvhelper/
+**/__pycache__
+**/*.pyc
+.pytest_cache/
+salidas/
+*.log
+.env
+
+# Documentacion y evidencias: no hacen falta para ejecutar el programa.
+docs/
+evidencias/
+automatas/

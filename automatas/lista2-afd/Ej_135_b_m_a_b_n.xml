@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<automata tipo="AFD">
+  <alfabeto><simbolo>a</simbolo><simbolo>b</simbolo></alfabeto>
+  <estados>
+    <estado nombre="q0" inicial="true"/>
+    <estado nombre="q1"/>
+    <estado nombre="q2"/>
+    <estado nombre="q3" aceptacion="true"/>
+    <estado nombre="q4"/>
+  </estados>
+  <transiciones>
+    <transicion desde="q0" lee="a" hacia="q4"/>
+    <transicion desde="q0" lee="b" hacia="q1"/>
+    <transicion desde="q1" lee="a" hacia="q2"/>
+    <transicion desde="q1" lee="b" hacia="q1"/>
+    <transicion desde="q2" lee="a" hacia="q4"/>
+    <transicion desde="q2" lee="b" hacia="q3"/>
+    <transicion desde="q3" lee="a" hacia="q4"/>
+    <transicion desde="q3" lee="b" hacia="q3"/>
+    <transicion desde="q4" lee="a" hacia="q4"/>
+    <transicion desde="q4" lee="b" hacia="q4"/>
+  </transiciones>
+</automata>

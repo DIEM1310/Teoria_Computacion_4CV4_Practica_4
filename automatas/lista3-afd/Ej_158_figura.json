@@ -1,0 +1,32 @@
+{
+  "tipo": "AFD",
+  "alfabeto": [
+    "0",
+    "1"
+  ],
+  "estados": [
+    "q1",
+    "q2",
+    "q3"
+  ],
+  "inicial": "q1",
+  "aceptacion": [
+    "q3"
+  ],
+  "transiciones": [
+    {
+      "desde": "q1",
+      "lee": "0",
+      "hacia": [
+        "q2"
+      ]
+    },
+    {
+      "desde": "q2",
+      "lee": "1",
+      "hacia": [
+        "q3"
+      ]
+    }
+  ]
+}

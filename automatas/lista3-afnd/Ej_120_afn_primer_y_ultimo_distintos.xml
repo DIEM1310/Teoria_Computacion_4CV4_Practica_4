@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<automata tipo="AFND">
+  <alfabeto><simbolo>0</simbolo><simbolo>1</simbolo><simbolo>2</simbolo></alfabeto>
+  <estados>
+    <estado nombre="q0" inicial="true"/>
+    <estado nombre="p0"/>
+    <estado nombre="p1"/>
+    <estado nombre="p2"/>
+    <estado nombre="f" aceptacion="true"/>
+  </estados>
+  <transiciones>
+    <transicion desde="q0" lee="0" hacia="p0"/>
+    <transicion desde="q0" lee="1" hacia="p1"/>
+    <transicion desde="q0" lee="2" hacia="p2"/>
+    <transicion desde="p0" lee="0" hacia="p0"/>
+    <transicion desde="p0" lee="1" hacia="p0"/>
+    <transicion desde="p0" lee="1" hacia="f"/>
+    <transicion desde="p0" lee="2" hacia="p0"/>
+    <transicion desde="p0" lee="2" hacia="f"/>
+    <transicion desde="p1" lee="0" hacia="p1"/>
+    <transicion desde="p1" lee="0" hacia="f"/>
+    <transicion desde="p1" lee="1" hacia="p1"/>
+    <transicion desde="p1" lee="2" hacia="p1"/>
+    <transicion desde="p1" lee="2" hacia="f"/>
+    <transicion desde="p2" lee="0" hacia="p2"/>
+    <transicion desde="p2" lee="0" hacia="f"/>
+    <transicion desde="p2" lee="1" hacia="p2"/>
+    <transicion desde="p2" lee="1" hacia="f"/>
+    <transicion desde="p2" lee="2" hacia="p2"/>
+  </transiciones>
+</automata>
